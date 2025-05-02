@@ -1,27 +1,30 @@
 const express = require('express');
-const mongoose = require('mongoose');
+const dotenv = require('dotenv');
 const cors = require('cors');
-require('dotenv').config();
 
+// Initialize dotenv to load environment variables
+dotenv.config();
+
+// MongoDB connection config (we'll create this in the next step)
+const connectDB = require('./config/db');
+
+// Create Express app
 const app = express();
-const PORT = process.env.PORT || 5000;
 
-app.use(cors());
-app.use(express.json());
+// Middleware
+app.use(cors()); // Enable Cross-Origin Resource Sharing
+app.use(express.json()); // To parse JSON bodies
 
-const authRoutes = require('./routes/auth');
-app.use('/api/auth', authRoutes);
+// Connect to MongoDB
+connectDB();
 
+// Placeholder route for testing
 app.get('/', (req, res) => {
-  res.send('API is running');
+  res.send('API is running...');
 });
 
-mongoose
-  .connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => {
-    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-  })
-  .catch((err) => console.error(err));
+// Server setup
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
