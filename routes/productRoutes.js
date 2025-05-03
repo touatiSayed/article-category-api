@@ -1,11 +1,13 @@
 const express = require('express');
 const Category = require('../models/Category');
 const Article = require('../models/Article');
+const authenticateToken = require('../middleware/authMiddleware'); // Import the auth middleware
 const router = express.Router();
 
 // Category Routes
 // Create Category
-router.post('/categories', async (req, res) => {
+router.post('/categories', authenticateToken, async (req, res) => {
+  // Protect this route with auth middleware
   const { name, description } = req.body;
 
   try {
@@ -28,7 +30,8 @@ router.get('/categories', async (req, res) => {
 });
 
 // Update Category
-router.put('/categories/:id', async (req, res) => {
+router.put('/categories/:id', authenticateToken, async (req, res) => {
+  // Protect this route with auth middleware
   const { name, description } = req.body;
 
   try {
@@ -44,7 +47,8 @@ router.put('/categories/:id', async (req, res) => {
 });
 
 // Delete Category
-router.delete('/categories/:id', async (req, res) => {
+router.delete('/categories/:id', authenticateToken, async (req, res) => {
+  // Protect this route with auth middleware
   try {
     await Category.findByIdAndDelete(req.params.id);
     res.status(200).json({ message: 'Category deleted' });
@@ -55,7 +59,8 @@ router.delete('/categories/:id', async (req, res) => {
 
 // Article Routes
 // Create Article
-router.post('/articles', async (req, res) => {
+router.post('/articles', authenticateToken, async (req, res) => {
+  // Protect this route with auth middleware
   const { name, description, category, price, images } = req.body;
 
   try {
@@ -84,7 +89,8 @@ router.get('/articles', async (req, res) => {
 });
 
 // Update Article
-router.put('/articles/:id', async (req, res) => {
+router.put('/articles/:id', authenticateToken, async (req, res) => {
+  // Protect this route with auth middleware
   const { name, description, category, price, images } = req.body;
 
   try {
@@ -100,7 +106,8 @@ router.put('/articles/:id', async (req, res) => {
 });
 
 // Delete Article
-router.delete('/articles/:id', async (req, res) => {
+router.delete('/articles/:id', authenticateToken, async (req, res) => {
+  // Protect this route with auth middleware
   try {
     await Article.findByIdAndDelete(req.params.id);
     res.status(200).json({ message: 'Article deleted' });
